@@ -4,29 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login Admin</title>
-    <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="LoginPageCss.css">
 </head>
 <body>
     <div class="login-container">
-        <!-- Header Logo + Title -->
+        
         <div class="header">
             <img src="ASSETS/smkn4.png" alt="Logo" class="logo">
             <h1 class="title">PEMINJAMAN BARANG</h1>
         </div>
-        
-        <!-- Welcome Text -->
+    
         <h2 class="welcome">Selamat Datang</h2>
 
-        <!-- Error Message -->
+        
         @if(session('error'))
             <div class="alert">
                 {{ session('error') }}
             </div>
         @endif
 
-        <!-- Form Login -->
+        
         <form action="{{ route('admin.login') }}" method="POST" class="login-form">
             @csrf
             <div class="form-group">
@@ -37,7 +35,7 @@
                 <label>Password</label>
                 <input type="password" id="password" name="password" placeholder="Enter password" required>
                 <span onclick="togglePassword()" class="eye-icon">
-                    <!-- SVG Eye Icon -->
+                    
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -53,7 +51,6 @@
             <button type="submit" class="btn-login">Login</button>
         </form>
     </div>
-
     <script>
         function togglePassword() {
             const input = document.getElementById("password");

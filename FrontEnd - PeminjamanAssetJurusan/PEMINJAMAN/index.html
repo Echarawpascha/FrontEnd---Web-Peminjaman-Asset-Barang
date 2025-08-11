@@ -1,0 +1,154 @@
+<link rel="stylesheet" href="peminjaman.css">
+<div class="app-container">
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div>
+      <div class="sidebar-header">
+        <img src="/LOGIN PAGE/ASSETS/smkn4.png" alt="Logo" class="logo" />
+        <h2 class="sidebar-title">PEMINJAMAN BARANG</h2>
+      </div>
+      <nav>
+        <ul class="menu">
+          <li><a href="{{ route('dashboard') }}">Dashboard</a></li>
+          <li><a href="{{ route('borrowing.request.create') }}" class="active">Peminjaman</a></li>
+          <li><a href="{{ route('admin.assets.index') }}">Komoditas</a></li>
+          <li><a href="{{ route('borrowings.index') }}">Riwayat Peminjaman</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="others">
+      <span>OTHERS</span>
+      <ul>
+        <li><a href="#">Settings</a></li>
+        <li><a href="#">Accounts</a></li>
+        <form action="{{ route('admin.logout') }}" method="POST" style="display:inline">
+          @csrf
+          <button type="submit">Logout</button>
+        </form>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Overlay for Mobile -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Main Content -->
+  <main class="main-content">
+    <header class="header">
+      <button class="hamburger" id="toggle-btn">☰</button>
+      <div class="profile">
+        <div class="profile-img"></div>
+        <span>Admin RPL</span>
+      </div>
+    </header>
+
+    <section class="content">
+      <div class="left-content">
+        <h1 class="page-title">Form Pengajuan Aset</h1>
+
+        {{-- Notifikasi Sukses --}}
+        @if(session('success'))
+          <div class="alert alert-success">
+            {{ session('success') }}
+          </div>
+        @endif
+
+        {{-- Notifikasi Error --}}
+        @if($errors->any())
+          <div class="alert alert-danger">
+            <strong>Ups!</strong> Ada kesalahan dalam pengisian data.
+          </div>
+        @endif
+
+        <form action="{{ route('borrowing.request.store') }}" method="POST">
+          @csrf
+
+          {{-- Nama Siswa --}}
+          <div class="mb-3">
+            <label for="name" class="form-label">Nama Lengkap Siswa</label>
+            <input type="text" name="name" class="form-control @error('name') is-invalid @enderror" 
+                  value="{{ old('name') }}" required>
+            @error('name')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          {{-- Kelas --}}
+          <div class="mb-3">
+            <label for="school_class" class="form-label">Kelas</label>
+            <input type="text" name="school_class" class="form-control @error('school_class') is-invalid @enderror" 
+                  value="{{ old('school_class') }}" required>
+            @error('school_class')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          {{-- Jurusan --}}
+          <div class="mb-3">
+            <label for="program" class="form-label">Jurusan</label>
+            <input type="text" name="program" class="form-control @error('program') is-invalid @enderror" 
+                  value="{{ old('program') }}" required>
+            @error('program')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          {{-- Barang --}}
+          <div class="mb-3">
+            <label for="commodity_id" class="form-label">Nama Barang</label>
+            <select name="commodity_id" class="form-control @error('commodity_id') is-invalid @enderror" required>
+              <option value="">-- Pilih Barang --</option>
+              @foreach ($commodities as $item)
+                <option value="{{ $item->id }}" {{ old('commodity_id') == $item->id ? 'selected' : '' }}>
+                  {{ $item->name }} (Stok: {{ $item->stock }})
+                </option>
+              @endforeach
+            </select>
+            @error('commodity_id')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          {{-- Tanggal Pinjam --}}
+          <div class="mb-3">
+            <label for="borrow_date" class="form-label">Tanggal Pinjam</label>
+            <input type="date" name="borrow_date" class="form-control @error('borrow_date') is-invalid @enderror" 
+                  value="{{ old('borrow_date') }}" required>
+            @error('borrow_date')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          {{-- Tanggal Kembali --}}
+          <div class="mb-3">
+            <label for="return_date" class="form-label">Tanggal Kembali</label>
+            <input type="date" name="return_date" class="form-control @error('return_date') is-invalid @enderror" 
+                  value="{{ old('return_date') }}" required>
+            @error('return_date')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
+          {{-- Tombol Submit --}}
+          <button type="submit" class="btn btn-success">Ajukan</button>
+        </form>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+  const toggleBtn = document.getElementById('toggle-btn');
+  const sidebar = document.getElementById('sidebar');
+  const overlay = document.getElementById('overlay');
+
+  toggleBtn.addEventListener('click', () => {
+    sidebar.classList.toggle('show');
+    overlay.classList.toggle('show');
+  });
+
+  overlay.addEventListener('click', () => {
+    sidebar.classList.remove('show');
+    overlay.classList.remove('show');
+  });
+</script>
